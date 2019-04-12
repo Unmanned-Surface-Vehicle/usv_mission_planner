@@ -1,87 +1,103 @@
 #include "ros/ros.h"
 #include "std_msgs/String.h"
 
+#include "../include/usv_guider/GridWithWeights.hpp"
+#include "../include/usv_guider/PriorityQueue.hpp"
 #include "../include/usv_guider/AStar.hpp"
 
 #include <sstream>
 
-/**
- * This tutorial demonstrates simple sending of messages over the ROS system.
- */
+void Test0_AStar(int, int, int, int);
+
 int main(int argc, char **argv)
 {
-  /**
-   * The ros::init() function needs to see argc and argv so that it can perform
-   * any ROS arguments and name remapping that were provided at the command line.
-   * For programmatic remappings you can use a different version of init() which takes
-   * remappings directly, but for most command-line programs, passing argc and argv is
-   * the easiest way to do it.  The third argument to init() is the name of the node.
-   *
-   * You must call one of the versions of ros::init() before using any other
-   * part of the ROS system.
-   */
-  ros::init(argc, argv, "usv_guider_node");
 
-  /**
-   * NodeHandle is the main access point to communications with the ROS system.
-   * The first NodeHandle constructed will fully initialize this node, and the last
-   * NodeHandle destructed will close down the node.
-   */
-  ros::NodeHandle n;
+  /*
+  * Basic configuration to start node and configure a publisher
+  */
+  ros::init(argc, argv, "usv_guider_node");                                                   // Basic iniitalization for ROS node
+  ros::NodeHandle n;                                                                          // Handler to interact with ROS
+  ros::Publisher usv_guider_pub = n.advertise<std_msgs::String>("usv_guider_command", 1000);  // Declaration of ROS topic and creation of a publishing handler
+  ros::Rate loop_rate(0.2);                                                                    // Runs CA strategy each 5 secs.
 
-  /**
-   * The advertise() function is how you tell ROS that you want to
-   * publish on a given topic name. This invokes a call to the ROS
-   * master node, which keeps a registry of who is publishing and who
-   * is subscribing. After this advertise() call is made, the master
-   * node will notify anyone who is trying to subscribe to this topic name,
-   * and they will in turn negotiate a peer-to-peer connection with this
-   * node.  advertise() returns a Publisher object which allows you to
-   * publish messages on that topic through a call to publish().  Once
-   * all copies of the returned Publisher object are destroyed, the topic
-   * will be automatically unadvertised.
-   *
-   * The second parameter to advertise() is the size of the message queue
-   * used for publishing messages.  If messages are published more quickly
-   * than we can send them, the number here specifies how many messages to
-   * buffer up before throwing some away.
-   */
-  ros::Publisher guider_pub = n.advertise<std_msgs::String>("guide", 1000);
+  char *p;
+  int num[argc -1];
 
-  ros::Rate loop_rate(10);
-
-  /**
-   * A count of how many messages we have sent. This is used to create
-   * a unique string for each message.
-   */
   int count = 0;
   while (ros::ok())
   {
-    /**
-     * This is a message object. You stuff it with data, and then publish it.
-     */
-    std_msgs::String msg;
 
+    std_msgs::String msg;
     std::stringstream ss;
     ss << "hello world " << count;
     msg.data = ss.str();
-
     ROS_INFO("%s", msg.data.c_str());
-
-    /**
-     * The publish() function is how you send messages. The parameter
-     * is the message object. The type of this object must agree with the type
-     * given as a template parameter to the advertise<>() call, as was done
-     * in the constructor above.
-     */
-    guider_pub.publish(msg);
-
+    usv_guider_pub.publish(msg);
     ros::spinOnce();
-
     loop_rate.sleep();
     ++count;
+
+
+
+    for(int i = 1; i < argc; i++){
+
+        errno = 0;
+        long conv = strtol(argv[i], &p, 10);
+
+        // Check for errors: e.g., the string does not represent an integer
+        // or the integer is larger than int
+        if (errno != 0 || *p != '\0' || conv > INT_MAX) {
+            std::cout << "Conversion from string to int failed" << std::endl;
+        } else {
+            // No error
+            num[i -1] = conv;
+        }
+
+    }
+
+    if(argc > 4){
+
+        Test0_AStar(num[0], num[1], num[2], num[3]);
+
+    }else{
+
+        Test0_AStar(-1, -1, -1, -1);
+
+    }
+
+    // Test0_AStar(NULL, NULL, NULL, NULL);
+
+
   }
 
 
   return 0;
+}
+
+void Test0_AStar(int startX=-1, int startY=-1, int goalX=-1, int goalY=-1){
+
+    GridWithWeights sg  = make_diagram4();
+
+    Pos start {8, 1};
+    Pos goal  {5, 4};
+
+    if(startX > -1) start.x = startX;
+    if(startY > -1) start.y = startY;
+    if(goalX  > -1) goal.x  = goalX;
+    if(goalY  > -1) goal.y  = goalY;
+
+    std::unordered_map<Pos, Pos>    came_from;
+    std::unordered_map<Pos, double> cost_so_far;
+
+    AStar_Search(sg, start, goal, came_from, cost_so_far);
+
+    draw_grid(sg, 2, nullptr, &came_from);
+    std::cout << '\n';
+
+    draw_grid(sg, 3, &cost_so_far, nullptr);
+    std::cout << '\n';
+
+    std::vector<Pos> path = reconstruct_path(start, goal, came_from);
+    draw_grid(sg, 3, nullptr, nullptr, &path);
+
 }
