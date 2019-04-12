@@ -20,9 +20,6 @@ int main(int argc, char **argv)
   ros::Publisher usv_guider_pub = n.advertise<std_msgs::String>("usv_guider_command", 1000);  // Declaration of ROS topic and creation of a publishing handler
   ros::Rate loop_rate(0.2);                                                                    // Runs CA strategy each 5 secs.
 
-  char *p;
-  int num[argc -1];
-
   int count = 0;
   while (ros::ok())
   {
@@ -37,36 +34,7 @@ int main(int argc, char **argv)
     loop_rate.sleep();
     ++count;
 
-
-
-    for(int i = 1; i < argc; i++){
-
-        errno = 0;
-        long conv = strtol(argv[i], &p, 10);
-
-        // Check for errors: e.g., the string does not represent an integer
-        // or the integer is larger than int
-        if (errno != 0 || *p != '\0' || conv > INT_MAX) {
-            std::cout << "Conversion from string to int failed" << std::endl;
-        } else {
-            // No error
-            num[i -1] = conv;
-        }
-
-    }
-
-    if(argc > 4){
-
-        Test0_AStar(num[0], num[1], num[2], num[3]);
-
-    }else{
-
-        Test0_AStar(-1, -1, -1, -1);
-
-    }
-
-    // Test0_AStar(NULL, NULL, NULL, NULL);
-
+    Test0_AStar(-1, -1, -1, -1);
 
   }
 
@@ -78,8 +46,8 @@ void Test0_AStar(int startX=-1, int startY=-1, int goalX=-1, int goalY=-1){
 
     GridWithWeights sg  = make_diagram4();
 
-    Pos start {8, 1};
-    Pos goal  {5, 4};
+    Pos start {0, 0};
+    Pos goal  {0, 0};
 
     if(startX > -1) start.x = startX;
     if(startY > -1) start.y = startY;
