@@ -1,5 +1,6 @@
 #include "ros/ros.h"
 #include "std_msgs/String.h"
+#include <nav_msgs/Odometry.h>
 
 #include "../include/usv_guider/GridWithWeights.hpp"
 #include "../include/usv_guider/PriorityQueue.hpp"
@@ -17,19 +18,24 @@ int main(int argc, char **argv)
   */
   ros::init(argc, argv, "usv_guider_node");                                                   // Basic iniitalization for ROS node
   ros::NodeHandle n;                                                                          // Handler to interact with ROS
-  ros::Publisher usv_guider_pub = n.advertise<std_msgs::String>("usv_guider_command", 1000);  // Declaration of ROS topic and creation of a publishing handler
-  ros::Rate loop_rate(0.2);                                                                    // Runs CA strategy each 5 secs.
+  ros::Publisher usv_guider_pub = n.advertise<nav_msgs::Odometry>("/airboat/move_usv/goal", 10);        // Declaration of ROS topic and creation of a publishing handler
+  ros::Rate loop_rate(0.2);                                                                   // Runs CA strategy each 5 secs.  
+
+  nav_msgs::Odometry usv_guider_command_position_msg;
+  usv_guider_command_position_msg.header.stamp = ros::Time::now();
+  usv_guider_command_position_msg.header.frame_id  = "world";
+  geometry_msgs::Point point;
+  point.x = 255;
+  point.y = 0;
+  point.z = 0;
+  usv_guider_command_position_msg.pose.pose.position = point;
 
   int count = 0;
   while (ros::ok())
   {
 
-    std_msgs::String msg;
-    std::stringstream ss;
-    ss << "hello world " << count;
-    msg.data = ss.str();
-    ROS_INFO("%s", msg.data.c_str());
-    usv_guider_pub.publish(msg);
+    ROS_INFO("Test >>>");
+    usv_guider_pub.publish(usv_guider_command_position_msg);
     ros::spinOnce();
     loop_rate.sleep();
     ++count;
