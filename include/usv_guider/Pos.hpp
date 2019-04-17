@@ -5,8 +5,8 @@
 
 struct Pos{
 
-	int x;
-	int y;
+	double x;
+	double y;
 };
 
 // Comparison method for Pos struct
@@ -32,7 +32,10 @@ namespace std{
         typedef std::size_t result_type;
 		std::size_t operator()(const Pos& p) const noexcept
 		{
-		    return std::hash<int>()(p.x ^ (p.y << 4));
+			int xx, yy;
+			xx = (int)p.x;
+			yy = (int)p.y;
+		    return std::hash<int>()(xx ^ (yy << 4));
 		}
 	};
 }

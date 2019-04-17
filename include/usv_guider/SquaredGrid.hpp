@@ -44,7 +44,7 @@ struct SquaredGrid {
             }
         }
 
-        if ((id.x + id.y) % 2 == 0) {
+        if ((int)(id.x + id.y) % 2 == 0) {
             // aesthetic improvement on square grids
             std::reverse(results.begin(), results.end());
         }
@@ -61,8 +61,8 @@ void draw_grid(const SquaredGrid& grid, int field_width,
                std::unordered_map<Pos, double>* distances=nullptr,
                std::unordered_map<Pos, Pos>* point_to=nullptr,
                std::vector<Pos>* path=nullptr) {
-  for (int y = 0; y != grid.height; ++y) {
-    for (int x = 0; x != grid.width; ++x) {
+  for (double y = 0; y != grid.height; ++y) {
+    for (double x = 0; x != grid.width; ++x) {
       Pos id {x, y};
       std::cout << std::left << std::setw(field_width);
       if (grid.walls.find(id) != grid.walls.end()) {
@@ -89,7 +89,7 @@ void draw_grid(const SquaredGrid& grid, int field_width,
 void add_rect(SquaredGrid& grid, int x1, int y1, int x2, int y2) {
   for (int x = x1; x < x2; ++x) {
     for (int y = y1; y < y2; ++y) {
-      grid.walls.insert(Pos{x, y});
+      grid.walls.insert(Pos{(double)x, (double)y});
     }
   }
 }
