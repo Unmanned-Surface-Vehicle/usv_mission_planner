@@ -104,6 +104,6 @@ void Test0_AStar(int startX=-1, int startY=-1, int goalX=-1, int goalY=-1){
 
 void usv_state_callback(const nav_msgs::Odometry::ConstPtr& usv_position_msg){
 
-  ROS_INFO("USV current position: X: %d, Y: %d", usv_position_msg->pose.pose.position.x, usv_position_msg->pose.pose.position.y);
+  ROS_INFO("USV current position: X: %f, Y: %f", usv_position_msg->pose.pose.position.x, usv_position_msg->pose.pose.position.y);
 
 }
