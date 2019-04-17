@@ -1,2 +1,2 @@
 # USV Guidance System - CPP
-COLREGs-Compliant USV Guider ROS package.
+A COLREGs-Compliant USV Guider ROS package.
