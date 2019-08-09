@@ -81,8 +81,8 @@ int main(int argc, char **argv){
 
       }else{
 
-        ROS_INFO("INSIDE ELSE DELETEEEEEEE");
-        delete path;
+        //restart
+        path = Plan_Mission();
 
       }
 
