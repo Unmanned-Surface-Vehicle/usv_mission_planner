@@ -36,3 +36,5 @@
 # vscode
 *.json
 
+build_isolated/.built_by
+devel_isolated/.built_by

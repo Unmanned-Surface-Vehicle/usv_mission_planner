@@ -8,7 +8,7 @@
 
 #include <sstream>
 
-#define ROS_MAIN_LOOP___TIME_INTERVAL                   0.2
+#define ROS_MAIN_LOOP___TIME_INTERVAL                   0.4
 #define PUBLISH_QUEUE_AMOUNT___USV_MP___GOAL_COMMAND    10
 #define SUBSCRIBE_QUEUE_AMOUNT___USV___CURRENT_POSITION 1
 #define ACCEPTABLE_RADIUS                               2
@@ -65,11 +65,7 @@ int main(int argc, char **argv){
     // Set new subgoal location after reach current subgoal
     if((abs(usv_current_pos.x - next_goal.x) <= ACCEPTABLE_RADIUS) && (abs(usv_current_pos.y - next_goal.y) <= ACCEPTABLE_RADIUS)){ // Tests if achieved subgoal
 
-      ROS_INFO("INSIDE IFFFFFFF");
-
       if(!path->empty()){
-
-        ROS_INFO("INSIDE IFFFFFFF EMPTYYYYY");
 
         next_goal = path->front();                  // Gets next subgoal location
         path->pop();                                // Removes from path data structure
@@ -115,24 +111,24 @@ std::queue<Pos>* Plan_Mission(){
   std::queue<Pos> *path = new std::queue<Pos>();
   Pos test;
 
-  test.x = 2.73;
-  test.y = 2.0;
+  test.x = (double) 13;
+  test.y = (double) 3;
   path->push(test);
 
-  test.x = 17.39;
-  test.y = 1.90;
+  test.x = (double) 16;
+  test.y = (double) 3;
   path->push(test);
 
-  test.x = 17.3;
-  test.y = 9.8;
+  test.x = (double) 16;
+  test.y = (double) 9;
   path->push(test);
 
-  test.x = 3.59;
-  test.y = 9.73;
+  test.x = (double) 5;
+  test.y = (double) 9;
   path->push(test);
 
-  test.x = 2.73;
-  test.y = 2.0;
+  test.x = (double) 5;
+  test.y = (double) 3;
   path->push(test);  
 
   return path;
