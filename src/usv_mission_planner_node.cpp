@@ -13,7 +13,9 @@
 #define SUBSCRIBE_QUEUE_AMOUNT___USV___CURRENT_POSITION 1
 #define ACCEPTABLE_RADIUS                               2
 
-std::queue<Pos>* Plan_Mission();
+std::queue<Pos>* Plan_Mission1();
+std::queue<Pos>* Plan_Mission2();
+std::queue<Pos>* Plan_Mission3();
 void usv_state_callback(const nav_msgs::Odometry::ConstPtr& usv_position_msg);
 
 geometry_msgs::Point usv_current_pos;
@@ -23,17 +25,17 @@ int main(int argc, char **argv){
   // Basic configuration to start node and configure a publisher
   ros::init(argc, argv, "usv_guider_node"); // Basic iniitalization for ROS node
   ros::NodeHandle n;                        // Handler to interact with ROS
-  ros::Publisher  usv_mp_pub = n.advertise<geometry_msgs::PoseStamped>("/diffboat/move_base_simple/goal", PUBLISH_QUEUE_AMOUNT___USV_MP___GOAL_COMMAND); // Declaration of ROS topic and creation of a publishing handler for usv_mission_planner goal command 
-  ros::Subscriber usv_mp_sub  = n.subscribe("/diffboat/state", SUBSCRIBE_QUEUE_AMOUNT___USV___CURRENT_POSITION, usv_state_callback);
+  ros::Publisher  usv_mp_pub = n.advertise<geometry_msgs::PoseStamped>("/diffboat1/move_base_simple/goal", PUBLISH_QUEUE_AMOUNT___USV_MP___GOAL_COMMAND); // Declaration of ROS topic and creation of a publishing handler for usv_mission_planner goal command 
+  ros::Subscriber usv_mp_sub  = n.subscribe("/diffboat1/state", SUBSCRIBE_QUEUE_AMOUNT___USV___CURRENT_POSITION, usv_state_callback);
   ros::Rate loop_rate(ROS_MAIN_LOOP___TIME_INTERVAL); 
 
   // USV Mision Planner position goal command message
   geometry_msgs::PoseStamped      usv_mp_goal_msg;
   usv_mp_goal_msg.header.stamp    = ros::Time::now();
-  usv_mp_goal_msg.header.frame_id = "diffboat/map";  
+  usv_mp_goal_msg.header.frame_id = "diffboat1/map";  
 
   // Gets mission plan
-  std::queue<Pos> *path = Plan_Mission();
+  std::queue<Pos> *path = Plan_Mission1usv_mp_pub();
 
   // Gets first goal
   Pos next_goal;
@@ -78,7 +80,7 @@ int main(int argc, char **argv){
       }else{
 
         //restart
-        path = Plan_Mission();
+        path = Plan_Mission1();
 
       }
 
@@ -106,13 +108,13 @@ void usv_state_callback(const nav_msgs::Odometry::ConstPtr& usv_position_msg){
 
 }
 
-std::queue<Pos>* Plan_Mission(){
+std::queue<Pos>* Plan_Mission1(){
 
   std::queue<Pos> *path = new std::queue<Pos>();
   Pos test;
 
   test.x = (double) 13;
-  test.y = (double) 3;
+  test.y = (double) 2;
   path->push(test);
 
   test.x = (double) 16;
@@ -130,6 +132,74 @@ std::queue<Pos>* Plan_Mission(){
   test.x = (double) 5;
   test.y = (double) 3;
   path->push(test);  
+
+  return path;
+  
+}
+
+std::queue<Pos>* Plan_Mission2(){
+
+  std::queue<Pos> *path = new std::queue<Pos>();
+  Pos test;
+
+  test.x = (double) 18;
+  test.y = (double) 5.5;
+  path->push(test);
+
+  // test.x = (double) 2;
+  // test.y = (double) 5;
+  // path->push(test);
+
+
+  return path;
+  
+}
+
+std::queue<Pos>* Plan_Mission3(){
+
+  std::queue<Pos> *path = new std::queue<Pos>();
+  Pos test;
+
+  test.x = (double) 5;
+  test.y = (double) 3;
+  path->push(test);
+
+  test.x = (double) 16;
+  test.y = (double) 2;
+  path->push(test);
+
+  test.x = (double) 16;
+  test.y = (double) 8;
+  path->push(test);
+
+  test.x = (double) 4;
+  test.y = (double) 8;
+  path->push(test);
+
+  test.x = (double) 2;
+  test.y = (double) 5;
+  path->push(test);
+
+  test.x = (double) 16;
+  test.y = (double) 2;
+  path->push(test);
+
+  test.x = (double) 4;
+  test.y = (double) 8;
+  path->push(test);
+
+  test.x = (double) 5;
+  test.y = (double) 3;
+  path->push(test);
+
+  test.x = (double) 16;
+  test.y = (double) 8;
+  path->push(test);
+
+  test.x = (double) 2;
+  test.y = (double) 5;
+  path->push(test);
+
 
   return path;
   
