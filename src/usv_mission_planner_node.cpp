@@ -35,7 +35,7 @@ int main(int argc, char **argv){
   usv_mp_goal_msg.header.frame_id = "diffboat1/map";  
 
   // Gets mission plan
-  std::queue<Pos> *path = Plan_Mission1usv_mp_pub();
+  std::queue<Pos> *path = Plan_Mission3();
 
   // Gets first goal
   Pos next_goal;
@@ -80,7 +80,7 @@ int main(int argc, char **argv){
       }else{
 
         //restart
-        path = Plan_Mission1();
+        path = Plan_Mission3();
 
       }
 
@@ -152,7 +152,6 @@ std::queue<Pos>* Plan_Mission2(){
 
 
   return path;
-  
 }
 
 std::queue<Pos>* Plan_Mission3(){
