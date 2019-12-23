@@ -8,7 +8,7 @@
 
 #include <sstream>
 
-#define ROS_MAIN_LOOP___TIME_INTERVAL                   0.4
+#define ROS_MAIN_LOOP___TIME_INTERVAL                   2
 #define PUBLISH_QUEUE_AMOUNT___USV_MP___GOAL_COMMAND    10
 #define SUBSCRIBE_QUEUE_AMOUNT___USV___CURRENT_POSITION 1
 #define ACCEPTABLE_RADIUS                               2
@@ -25,17 +25,17 @@ int main(int argc, char **argv){
   // Basic configuration to start node and configure a publisher
   ros::init(argc, argv, "usv_guider_node"); // Basic iniitalization for ROS node
   ros::NodeHandle n;                        // Handler to interact with ROS
-  ros::Publisher  usv_mp_pub = n.advertise<geometry_msgs::PoseStamped>("/diffboat1/move_base_simple/goal", PUBLISH_QUEUE_AMOUNT___USV_MP___GOAL_COMMAND); // Declaration of ROS topic and creation of a publishing handler for usv_mission_planner goal command 
-  ros::Subscriber usv_mp_sub  = n.subscribe("/diffboat1/state", SUBSCRIBE_QUEUE_AMOUNT___USV___CURRENT_POSITION, usv_state_callback);
+  ros::Publisher  usv_mp_pub = n.advertise<geometry_msgs::PoseStamped>("/diffboat/move_base_simple/goal", PUBLISH_QUEUE_AMOUNT___USV_MP___GOAL_COMMAND); // Declaration of ROS topic and creation of a publishing handler for usv_mission_planner goal command 
+  ros::Subscriber usv_mp_sub  = n.subscribe("/diffboat/state", SUBSCRIBE_QUEUE_AMOUNT___USV___CURRENT_POSITION, usv_state_callback);
   ros::Rate loop_rate(ROS_MAIN_LOOP___TIME_INTERVAL); 
 
   // USV Mision Planner position goal command message
   geometry_msgs::PoseStamped      usv_mp_goal_msg;
   usv_mp_goal_msg.header.stamp    = ros::Time::now();
-  usv_mp_goal_msg.header.frame_id = "diffboat1/map";  
+  usv_mp_goal_msg.header.frame_id = "diffboat/map";  
 
   // Gets mission plan
-  std::queue<Pos> *path = Plan_Mission3();
+  std::queue<Pos> *path = Plan_Mission1();
 
   // Gets first goal
   Pos next_goal;
@@ -80,7 +80,7 @@ int main(int argc, char **argv){
       }else{
 
         //restart
-        path = Plan_Mission3();
+        path = Plan_Mission1();
 
       }
 
