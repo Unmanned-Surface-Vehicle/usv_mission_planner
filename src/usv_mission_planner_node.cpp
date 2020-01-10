@@ -16,6 +16,8 @@
 std::queue<Pos>* Plan_Mission1();
 std::queue<Pos>* Plan_Mission2();
 std::queue<Pos>* Plan_Mission3();
+std::queue<Pos>* Plan_Mission_Diluvio();
+
 void usv_state_callback(const nav_msgs::Odometry::ConstPtr& usv_position_msg);
 
 geometry_msgs::Point usv_current_pos;
@@ -35,7 +37,7 @@ int main(int argc, char **argv){
   usv_mp_goal_msg.header.frame_id = "diffboat1/map";  
 
   // Gets mission plan
-  std::queue<Pos> *path = Plan_Mission2();
+  std::queue<Pos> *path = Plan_Mission_Diluvio();
 
   // Gets first goal
   Pos next_goal;
@@ -80,7 +82,7 @@ int main(int argc, char **argv){
       }else{
 
         //restart
-        path = Plan_Mission2();
+        path = Plan_Mission_Diluvio();
 
       }
 
@@ -142,21 +144,21 @@ std::queue<Pos>* Plan_Mission2(){
   std::queue<Pos> *path = new std::queue<Pos>();
   Pos test;
 
-  // test.x = (double) 18;
-  // test.y = (double) 5.5;
-  // path->push(test);
+  test.x = (double) 18;
+  test.y = (double) 5.5;
+  path->push(test);
 
-  // test.x = (double) 2;
-  // test.y = (double) 5;
-  // path->push(test);
-  
   test.x = (double) 2;
   test.y = (double) 5;
   path->push(test);
   
-  test.x = (double) 18;
-  test.y = (double) 5.5;
-  path->push(test);
+  // test.x = (double) 2;
+  // test.y = (double) 5;
+  // path->push(test);
+  
+  // test.x = (double) 18;
+  // test.y = (double) 5.5;
+  // path->push(test);
 
   return path;
 }
@@ -209,4 +211,28 @@ std::queue<Pos>* Plan_Mission3(){
 
   return path;
   
+}
+
+std::queue<Pos>* Plan_Mission_Diluvio(){
+
+  std::queue<Pos> *path = new std::queue<Pos>();
+  Pos test;
+
+  test.x = (double) 460;
+  test.y = (double) 115;
+  path->push(test);
+
+  test.x = (double) 430;
+  test.y = (double) 115;
+  path->push(test);
+  
+  // test.x = (double) 2;
+  // test.y = (double) 5;
+  // path->push(test);
+  
+  // test.x = (double) 18;
+  // test.y = (double) 5.5;
+  // path->push(test);
+
+  return path;
 }
