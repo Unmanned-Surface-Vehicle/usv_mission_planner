@@ -38,6 +38,8 @@ int main(int argc, char **argv){
 
   // Gets mission plan
   std::queue<Pos> *path = Plan_Mission_Diluvio();
+  // std::queue<Pos> *path = Plan_Mission2();
+  
 
   // Gets first goal
   Pos next_goal;
@@ -82,8 +84,8 @@ int main(int argc, char **argv){
       }else{
 
         //restart
+        // path = Plan_Mission2();
         path = Plan_Mission_Diluvio();
-
       }
 
     }
