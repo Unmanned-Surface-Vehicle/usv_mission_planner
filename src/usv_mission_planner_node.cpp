@@ -17,6 +17,8 @@ std::queue<Pos>* Plan_Mission1();
 std::queue<Pos>* Plan_Mission2();
 std::queue<Pos>* Plan_Mission3();
 std::queue<Pos>* Plan_Mission_Diluvio();
+std::queue<Pos> *Plan_Mission_Diluvio_Tunning();
+std::queue<Pos>* Plan_Mission_Diluvio_Huang2019Generalized_HeadOn();
 
 void usv_state_callback(const nav_msgs::Odometry::ConstPtr& usv_position_msg);
 
@@ -37,7 +39,9 @@ int main(int argc, char **argv){
   usv_mp_goal_msg.header.frame_id = "diffboat1/map";  
 
   // Gets mission plan
-  std::queue<Pos> *path = Plan_Mission_Diluvio();
+  // std::queue<Pos> *path = Plan_Mission_Diluvio();
+  std::queue<Pos> *path = Plan_Mission_Diluvio_Huang2019Generalized_HeadOn();
+  // std::queue<Pos> *path = Plan_Mission_Diluvio_Tunning();
   // std::queue<Pos> *path = Plan_Mission2();
   
 
@@ -86,6 +90,9 @@ int main(int argc, char **argv){
         //restart
         // path = Plan_Mission2();
         path = Plan_Mission_Diluvio();
+        path = Plan_Mission_Diluvio_Huang2019Generalized_HeadOn();        
+        // path = Plan_Mission_Diluvio_Tunning();
+        
       }
 
     }
@@ -220,13 +227,61 @@ std::queue<Pos>* Plan_Mission_Diluvio(){
   std::queue<Pos> *path = new std::queue<Pos>();
   Pos test;
 
-  test.x = (double) 460;
+  test.x = (double) 478;
   test.y = (double) 115;
   path->push(test);
 
-  test.x = (double) 430;
+  test.x = (double) 460;
   test.y = (double) 115;
   path->push(test);
+  
+  // test.x = (double) 2;
+  // test.y = (double) 5;
+  // path->push(test);
+  
+  // test.x = (double) 18;
+  // test.y = (double) 5.5;
+  // path->push(test);
+
+  return path;
+}
+
+std::queue<Pos>* Plan_Mission_Diluvio_Tunning(){
+
+  std::queue<Pos> *path = new std::queue<Pos>();
+  Pos test;
+
+  test.x = (double) 466;
+  test.y = (double) 115;
+  path->push(test);
+
+  test.x = (double) 446;
+  test.y = (double) 105;
+  path->push(test);
+  
+  // test.x = (double) 2;
+  // test.y = (double) 5;
+  // path->push(test);
+  
+  // test.x = (double) 18;
+  // test.y = (double) 5.5;
+  // path->push(test);
+
+  return path;
+}
+
+std::queue<Pos>* Plan_Mission_Diluvio_Huang2019Generalized_HeadOn(){
+
+  std::queue<Pos> *path = new std::queue<Pos>();
+  Pos test;
+
+  test.x = (double) 480;
+  test.y = (double) 112.5;
+  path->push(test);
+
+  // test.x = (double) 446;
+  // test.y = (double) 105;
+  // path->push(test);
   
   // test.x = (double) 2;
   // test.y = (double) 5;
