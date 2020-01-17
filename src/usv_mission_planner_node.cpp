@@ -19,6 +19,9 @@ std::queue<Pos>* Plan_Mission3();
 std::queue<Pos>* Plan_Mission_Diluvio();
 std::queue<Pos> *Plan_Mission_Diluvio_Tunning();
 std::queue<Pos>* Plan_Mission_Diluvio_Huang2019Generalized_HeadOn();
+std::queue<Pos>* Plan_Mission_Diluvio_Huang2019Generalized_CrossingRight();
+std::queue<Pos>* Plan_Mission_Diluvio_Svec2013_Overtaking();
+
 
 void usv_state_callback(const nav_msgs::Odometry::ConstPtr& usv_position_msg);
 
@@ -40,7 +43,11 @@ int main(int argc, char **argv){
 
   // Gets mission plan
   // std::queue<Pos> *path = Plan_Mission_Diluvio();
-  std::queue<Pos> *path = Plan_Mission_Diluvio_Huang2019Generalized_HeadOn();
+  // std::queue<Pos> *path = Plan_Mission_Diluvio_Huang2019Generalized_HeadOn();
+  std::queue<Pos> *path = Plan_Mission_Diluvio_Huang2019Generalized_CrossingRight();
+  // std::queue<Pos> *path = Plan_Mission_Diluvio_Svec2013_Overtaking();
+  
+  
   // std::queue<Pos> *path = Plan_Mission_Diluvio_Tunning();
   // std::queue<Pos> *path = Plan_Mission2();
   
@@ -89,8 +96,10 @@ int main(int argc, char **argv){
 
         //restart
         // path = Plan_Mission2();
-        path = Plan_Mission_Diluvio();
-        path = Plan_Mission_Diluvio_Huang2019Generalized_HeadOn();        
+        // path = Plan_Mission_Diluvio();
+        // path = Plan_Mission_Diluvio_Huang2019Generalized_HeadOn();  
+        path = Plan_Mission_Diluvio_Huang2019Generalized_CrossingRight();
+        // path = Plan_Mission_Diluvio_Svec2013_Overtaking();
         // path = Plan_Mission_Diluvio_Tunning();
         
       }
@@ -276,7 +285,55 @@ std::queue<Pos>* Plan_Mission_Diluvio_Huang2019Generalized_HeadOn(){
   Pos test;
 
   test.x = (double) 480;
-  test.y = (double) 112.5;
+  test.y = (double) 107.5;
+  path->push(test);
+
+  // test.x = (double) 446;
+  // test.y = (double) 105;
+  // path->push(test);
+  
+  // test.x = (double) 2;
+  // test.y = (double) 5;
+  // path->push(test);
+  
+  // test.x = (double) 18;
+  // test.y = (double) 5.5;
+  // path->push(test);
+
+  return path;
+}
+
+std::queue<Pos>* Plan_Mission_Diluvio_Huang2019Generalized_CrossingRight(){
+
+  std::queue<Pos> *path = new std::queue<Pos>();
+  Pos test;
+
+  test.x = (double) 410;
+  test.y = (double) 133;
+  path->push(test);
+
+  // test.x = (double) 446;
+  // test.y = (double) 105;
+  // path->push(test);
+  
+  // test.x = (double) 2;
+  // test.y = (double) 5;
+  // path->push(test);
+  
+  // test.x = (double) 18;
+  // test.y = (double) 5.5;
+  // path->push(test);
+
+  return path;
+}
+
+std::queue<Pos>* Plan_Mission_Diluvio_Svec2013_Overtaking(){
+
+  std::queue<Pos> *path = new std::queue<Pos>();
+  Pos test;
+
+  test.x = (double) 475;
+  test.y = (double) 115;
   path->push(test);
 
   // test.x = (double) 446;
